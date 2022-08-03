@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 let transactionSchema = mongoose.Schema(
   {
@@ -18,9 +19,9 @@ let transactionSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    TrDate: {
-      type: Date,
-      default: new Date(),
+    TrDateMonth: {
+      type: String,
+      default: moment().format('YYYY-MM'),
     },
     User: {
       type: mongoose.Schema.Types.ObjectId,
