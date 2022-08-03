@@ -4,10 +4,15 @@ module.exports = {
   myTransaction: async (req, res) => {
     try {
       let User = req.user._id;
+      let {TrDateMonth} = req.body;
+      const checkDateMonth = TrDateMonth === undefined || TrDateMonth === '';
 
-      const Data = await Transaction.find({User})
-        .select('Title Note Category Amount TrDate createdAt updatedAt')
-        .populate('Category');
+      const Data = await Transaction.find(
+        checkDateMonth ? {User} : {User, TrDateMonth},
+      )
+        .select('Title Note Category Amount TrDateMonth createdAt updatedAt')
+        .populate('Category', 'Name Type Limit')
+        .sort({createdAt: -1});
 
       res.status(200).json({
         Success: true,
@@ -52,8 +57,8 @@ module.exports = {
       const {_id} = req.body;
 
       const Data = await Transaction.findOne({_id})
-        .select('Title Note Category Amount TrDate createdAt updatedAt')
-        .populate('Category');
+        .select('Title Note Category Amount TrDateMonth createdAt updatedAt')
+        .populate('Category', 'Name Type Limit');
 
       res.status(200).json({
         Success: true,
@@ -69,8 +74,8 @@ module.exports = {
   },
   editTransaction: async (req, res) => {
     try {
-      const {_id, Title, Note, Category, Amount, TrDate} = req.body;
-      let payload = {Title, Note, Category, Amount, TrDate};
+      const {_id, Title, Note, Category, Amount, TrDateMonth} = req.body;
+      let payload = {Title, Note, Category, Amount, TrDateMonth};
 
       await Transaction.findOneAndUpdate({_id}, payload);
 
