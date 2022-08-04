@@ -4,19 +4,34 @@ module.exports = {
   myTransaction: async (req, res) => {
     try {
       let User = req.user._id;
-      let {TrDateMonth, Show} = req.body;
+      let {TrDateMonth, Show, Sort, Type, Category} = req.body;
+      const checkCategory = Category === undefined || Category === '';
 
-      const dtTransaction = await Transaction.find({User, TrDateMonth})
+      const dtTransaction = await Transaction.find(
+        checkCategory ? {User, TrDateMonth} : {User, TrDateMonth, Category},
+      )
         .select('Title Note Category Amount TrDateMonth createdAt updatedAt')
         .populate('Category', 'Name Type Limit')
-        .sort({createdAt: -1});
+        .sort({createdAt: Sort === 'Oldest' ? 1 : -1});
 
-      let Data = Show === 'Recent' ? dtTransaction.slice(0, 5) : dtTransaction;
+      let showData = () => {
+        if (Type === 'Income') {
+          return dtTransaction.filter((v) => {
+            return v.Category.Type === 'Income';
+          });
+        } else if (Type === 'Expense') {
+          return dtTransaction.filter((v) => {
+            return v.Category.Type === 'Expense';
+          });
+        } else {
+          return dtTransaction;
+        }
+      };
 
       res.status(200).json({
         Success: true,
         Message: '',
-        Data,
+        Data: Show === 'Recent' ? dtTransaction.slice(0, 5) : showData(),
       });
     } catch (err) {
       res.status(500).json({
