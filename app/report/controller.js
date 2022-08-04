@@ -186,4 +186,68 @@ module.exports = {
       });
     }
   },
+  reachedLimit: async (req, res) => {
+    try {
+      let User = req.user._id;
+      let {TrDateMonth} = req.body;
+
+      // get all category
+      const getCategory = await Category.find({User, Type: 'Expense'});
+
+      // get all transaction
+      const getTransactions = await Transaction.find({
+        User,
+        TrDateMonth,
+      }).populate('Category');
+
+      // get transaction by expense & calc total amount
+      let transactionByExpense = getTransactions.filter((item) => {
+        return item.Category.Type === 'Expense';
+      });
+      let totalTrExpense = transactionByExpense.reduce((val, data) => {
+        return val + data.Amount;
+      }, 0);
+
+      // get top expense spending by category
+      let getData = [];
+      getCategory.map((ct) => {
+        let getExpense = getTransactions
+          .filter((v) => {
+            return v.Category.Type === 'Expense' && v.Category.Name === ct.Name;
+          })
+          .reduce((i, o) => o.Amount + i, 0);
+
+        let Percentage = (getExpense / totalTrExpense) * 1;
+
+        return (getData = [
+          ...getData,
+          {
+            Category: ct.Name,
+            Total: getExpense,
+            Percentage: isNaN(Percentage) ? 0 : Percentage,
+          },
+        ]);
+      });
+
+      let Data = getData.filter((dt) => {
+        return (
+          dt.Total >=
+          getCategory.find((s) => {
+            return s.Name === dt.Category;
+          }).Limit
+        );
+      });
+
+      res.status(200).json({
+        Success: true,
+        Message: '',
+        Data,
+      });
+    } catch (err) {
+      res.status(500).json({
+        Success: false,
+        Message: err.message || 'Internal server error!',
+      });
+    }
+  },
 };
