@@ -59,10 +59,21 @@ module.exports = {
             });
           }
         } else {
-          res.status(403).json({
-            Success: false,
-            Message: 'Your email is not registered yet',
-          });
+          const checkEmailFormat = new RegExp(
+            /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g,
+          ).test(Email);
+
+          if (!checkEmailFormat) {
+            res.status(403).json({
+              Success: false,
+              Message: 'Your email format is wrong',
+            });
+          } else {
+            res.status(403).json({
+              Success: false,
+              Message: 'Your email is not registered yet',
+            });
+          }
         }
       })
       .catch((err) => {
