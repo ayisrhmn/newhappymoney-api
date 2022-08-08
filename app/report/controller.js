@@ -223,6 +223,7 @@ module.exports = {
           ...getData,
           {
             Category: ct.Name,
+            Limit: ct.Limit,
             Total: getExpense,
             Percentage: isNaN(Percentage) ? 0 : Percentage,
           },
