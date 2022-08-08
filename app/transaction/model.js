@@ -23,6 +23,10 @@ let transactionSchema = mongoose.Schema(
       type: String,
       default: moment().format('YYYY-MM'),
     },
+    TrDate: {
+      type: String,
+      default: moment().format('YYYY-MM-DD'),
+    },
     User: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

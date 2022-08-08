@@ -10,9 +10,11 @@ module.exports = {
       const dtTransaction = await Transaction.find(
         checkCategory ? {User, TrDateMonth} : {User, TrDateMonth, Category},
       )
-        .select('Title Note Category Amount TrDateMonth createdAt updatedAt')
+        .select(
+          'Title Note Category Amount TrDateMonth TrDate createdAt updatedAt',
+        )
         .populate('Category', 'Name Type Limit')
-        .sort({createdAt: Sort === 'Oldest' ? 1 : -1});
+        .sort({TrDate: Sort === 'Oldest' ? 1 : -1});
 
       let showData = () => {
         if (Type === 'Income') {
@@ -112,7 +114,9 @@ module.exports = {
       const {_id} = req.body;
 
       const Data = await Transaction.findOne({_id})
-        .select('Title Note Category Amount TrDateMonth createdAt updatedAt')
+        .select(
+          'Title Note Category Amount TrDateMonth TrDate createdAt updatedAt',
+        )
         .populate('Category', 'Name Type Limit');
 
       res.status(200).json({
@@ -129,8 +133,9 @@ module.exports = {
   },
   editTransaction: async (req, res) => {
     try {
-      const {_id, Title, Note, Category, Amount, TrDateMonth} = req.body;
-      let payload = {Title, Note, Category, Amount, TrDateMonth};
+      const {_id, Title, Note, Category, Amount, TrDateMonth, TrDate} =
+        req.body;
+      let payload = {Title, Note, Category, Amount, TrDateMonth, TrDate};
 
       await Transaction.findOneAndUpdate({_id}, payload);
 
