@@ -239,12 +239,7 @@ module.exports = {
       });
 
       let Data = getData.filter((dt) => {
-        return (
-          dt.Total >=
-            getCategory.find((s) => {
-              return s.Name === dt.Category;
-            }).Limit && dt.Limit !== 0
-        );
+        return dt.Total >= dt.Limit && dt.Limit !== 0;
       });
 
       res.status(200).json({
