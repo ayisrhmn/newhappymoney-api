@@ -241,9 +241,9 @@ module.exports = {
       let Data = getData.filter((dt) => {
         return (
           dt.Total >=
-          getCategory.find((s) => {
-            return s.Name === dt.Category;
-          }).Limit
+            getCategory.find((s) => {
+              return s.Name === dt.Category;
+            }).Limit && dt.Limit !== 0
         );
       });
 
