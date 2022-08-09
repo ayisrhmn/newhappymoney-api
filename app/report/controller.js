@@ -67,7 +67,7 @@ module.exports = {
 
       // get all transaction
       const getTransactions = await Transaction.find(
-        checkMonth ? {User} : {UserTrDateMonth},
+        checkMonth ? {User} : {User, TrDateMonth},
       ).populate('Category');
 
       // get transaction by income & calc total amount
@@ -136,7 +136,7 @@ module.exports = {
 
       // get all transaction
       const getTransactions = await Transaction.find(
-        checkMonth ? {User} : {UserTrDateMonth},
+        checkMonth ? {User} : {User, TrDateMonth},
       ).populate('Category');
 
       // get transaction by expense & calc total amount
