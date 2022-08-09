@@ -60,15 +60,15 @@ module.exports = {
     try {
       let User = req.user._id;
       let {TrDateMonth, Show} = req.body;
+      const checkMonth = TrDateMonth === '' || TrDateMonth === undefined;
 
       // get all category
       const getCategory = await Category.find({User, Type: 'Income'});
 
       // get all transaction
-      const getTransactions = await Transaction.find({
-        User,
-        TrDateMonth,
-      }).populate('Category');
+      const getTransactions = await Transaction.find(
+        checkMonth ? {User} : {UserTrDateMonth},
+      ).populate('Category');
 
       // get transaction by income & calc total amount
       let transactionByIncome = getTransactions.filter((item) => {
@@ -101,9 +101,13 @@ module.exports = {
 
       // sorting data
       const sortData = (data) => {
-        return data.sort((a, b) => {
-          return a.Total > b.Total ? -1 : 1;
-        });
+        return data
+          .sort((a, b) => {
+            return a.Total > b.Total ? -1 : 1;
+          })
+          .filter((o) => {
+            return o.Total !== 0;
+          });
       };
 
       let Data =
@@ -125,15 +129,15 @@ module.exports = {
     try {
       let User = req.user._id;
       let {TrDateMonth, Show} = req.body;
+      const checkMonth = TrDateMonth === '' || TrDateMonth === undefined;
 
       // get all category
       const getCategory = await Category.find({User, Type: 'Expense'});
 
       // get all transaction
-      const getTransactions = await Transaction.find({
-        User,
-        TrDateMonth,
-      }).populate('Category');
+      const getTransactions = await Transaction.find(
+        checkMonth ? {User} : {UserTrDateMonth},
+      ).populate('Category');
 
       // get transaction by expense & calc total amount
       let transactionByExpense = getTransactions.filter((item) => {
@@ -166,9 +170,13 @@ module.exports = {
 
       // sorting data
       const sortData = (data) => {
-        return data.sort((a, b) => {
-          return a.Total > b.Total ? -1 : 1;
-        });
+        return data
+          .sort((a, b) => {
+            return a.Total > b.Total ? -1 : 1;
+          })
+          .filter((o) => {
+            return o.Total !== 0;
+          });
       };
 
       let Data =
