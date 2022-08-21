@@ -109,28 +109,6 @@ module.exports = {
       next(err);
     }
   },
-  detailTransaction: async (req, res) => {
-    try {
-      const {_id} = req.body;
-
-      const Data = await Transaction.findOne({_id})
-        .select(
-          'Title Note Category Amount TrDateMonth TrDate createdAt updatedAt',
-        )
-        .populate('Category', 'Name Type Limit');
-
-      res.status(200).json({
-        Success: true,
-        Message: '',
-        Data,
-      });
-    } catch (err) {
-      res.status(500).json({
-        Success: false,
-        Message: err.message || 'Internal server error!',
-      });
-    }
-  },
   editTransaction: async (req, res) => {
     try {
       const {_id, Title, Note, Category, Amount, TrDateMonth, TrDate} =
