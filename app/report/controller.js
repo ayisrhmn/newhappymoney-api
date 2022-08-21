@@ -92,6 +92,7 @@ module.exports = {
         return (getData = [
           ...getData,
           {
+            _id: ct._id,
             Category: ct.Name,
             Total: getIncome,
             Percentage: isNaN(Percentage) ? 0 : Percentage,
@@ -161,6 +162,7 @@ module.exports = {
         return (getData = [
           ...getData,
           {
+            _id: ct._id,
             Category: ct.Name,
             Total: getExpense,
             Percentage: isNaN(Percentage) ? 0 : Percentage,
