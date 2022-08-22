@@ -5,9 +5,9 @@ module.exports = {
     try {
       let User = req.user._id;
 
-      const Data = await Category.find({User}).select(
-        'Name Type Limit createdAt updatedAt',
-      );
+      const Data = await Category.find({User})
+        .select('Name Type Limit createdAt updatedAt')
+        .sort({Name: 1});
 
       res.status(200).json({
         Success: true,
