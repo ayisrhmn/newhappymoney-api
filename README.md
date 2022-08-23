@@ -14,3 +14,11 @@ ___
 ## How to Run Service
 
 - Run service `yarn dev`
+
+## General Info for Development
+
+- Node version 12 LTS
+- Yarn version 1 (classic)
+- Node.js web framework, Express
+- Node.js MongoDb framework, Mongoose
+- Date hack, moment.js
