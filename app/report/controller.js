@@ -256,4 +256,37 @@ module.exports = {
       });
     }
   },
+  spendingToday: async (req, res) => {
+    try {
+      let User = req.user._id;
+      let {TrDate} = req.body;
+
+      // get all transaction
+      const getTransactions = await Transaction.find({
+        User,
+        TrDate,
+      }).populate('Category');
+
+      // get transaction by expense & calc total amount
+      let transactionByExpense = getTransactions.filter((item) => {
+        return item.Category.Type === 'Expense';
+      });
+      let totalTrExpense = transactionByExpense.reduce((val, data) => {
+        return val + data.Amount;
+      }, 0);
+
+      const Data = totalTrExpense;
+
+      res.status(200).json({
+        Success: true,
+        Message: '',
+        Data,
+      });
+    } catch (err) {
+      res.status(500).json({
+        Success: false,
+        Message: err.message || 'Internal server error!',
+      });
+    }
+  },
 };
