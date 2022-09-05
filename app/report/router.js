@@ -13,6 +13,6 @@ router.post('/', isLoginUser, spendingReport);
 router.post('/top/income', isLoginUser, topIncomeSpending);
 router.post('/top/expense', isLoginUser, topExpenseSpending);
 router.post('/reachedlimit', isLoginUser, reachedLimit);
-router.post('/spend/today', isLoginUser, spendingToday);
+router.post('/spent/today', isLoginUser, spendingToday);
 
 module.exports = router;
