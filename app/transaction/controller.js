@@ -14,7 +14,10 @@ module.exports = {
           'Title Note Category Amount TrDateMonth TrDate createdAt updatedAt',
         )
         .populate('Category', 'Name Type Limit')
-        .sort({TrDate: Sort === 'Oldest' ? 1 : -1});
+        .sort({
+          TrDate: Sort === 'Oldest' ? 1 : -1,
+          createdAt: Sort === 'Oldest' ? 1 : -1,
+        });
 
       let showData = () => {
         if (Type === 'Income') {
