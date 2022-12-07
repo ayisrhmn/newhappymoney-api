@@ -1,6 +1,0 @@
-{
-  "version": 2,
-  "name": "newhappymoney-api",
-  "builds": [{"src": "app.js", "use": "@vercel/node"}],
-  "routes": [{"src": "/(.*)", "dest": "/app.js"}]
-}
