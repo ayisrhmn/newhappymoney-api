@@ -22,3 +22,7 @@ ___
 - Node.js web framework, Express
 - Node.js MongoDb framework, Mongoose
 - Date hack, moment.js
+
+## Author
+
+Muhammad Fariz Rahman
